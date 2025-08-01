@@ -1,0 +1,24 @@
+import OnIntersection from "<on-intersection>";
+
+server const NUM_EAGER_LOADED = 4;
+server const NUM_TOTAL = 20;
+
+<div class="lazy">
+  <for|num| to=NUM_TOTAL>
+    <div class="lazy__section">
+      <${num < NUM_EAGER_LOADED ? null : OnIntersection}>
+        <fragment src=`/~lazy/${num}`/>
+      </>
+    </div>
+  </for>
+</div>
+
+<style>
+  .lazy {
+    display: grid;
+  }
+
+  .lazy__section {
+    height: 100px
+  }
+</style>

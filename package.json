@@ -1,0 +1,22 @@
+{
+  "name": "marko-6-dev-vs-prod-issue",
+  "version": "1.0.0",
+  "description": "Minimum reproduction to showcase bug, whereby dev build works, but prod does not",
+  "private": true,
+  "keywords": [],
+  "author": "Voon Siong WONG",
+  "license": "ISC",
+  "dependencies": {
+    "marko": "^6.0.41"
+  },
+  "devDependencies": {
+    "@marko/run": "^0.8.0"
+  },
+  "scripts": {
+    "build": "NODE_ENV=production marko-run build",
+    "dev": "marko-run dev",
+    "preview": "marko-run preview",
+    "start": "NODE_ENV=production node dist/index.mjs"
+  },
+  "type": "module"
+}

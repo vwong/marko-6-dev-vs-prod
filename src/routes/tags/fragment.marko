@@ -1,0 +1,58 @@
+export interface Input {
+  src: MarkoRun.GetPaths;
+}
+server const base = "http://ignored";
+
+<const/loader=(
+  (globalThis.__marko_run__
+    ? globalThis.__marko_run__.fetch(
+        new Request(`${base}${input.src}`, {
+          headers: $global.request.headers,
+        }),
+        $global.platform,
+      )
+    : fetch(input.src, { signal: $signal })
+  )
+    .then((response) => {
+      if (response?.ok) {
+        return response.text();
+      } else {
+        throw new Error(`Error fetching ${input.src}`);
+      }
+    })
+    .catch((error) => {
+      if (error.name === "AbortError") {
+        return;
+      }
+      throw error;
+    })
+)>
+
+<key=input.src>
+  <try>
+    <@placeholder>
+      <div>...</div>
+    </@placeholder>
+
+    <@catch>
+      <div>error</div>
+    </@catch>
+
+    <await|html: string|=loader>
+      <if=globalThis.__marko_run__>
+        <div>$!{html}</div>
+      </if>
+      <else>
+        <div/result/>
+        <script>
+          const fragment = document
+            .createRange()
+            .createContextualFragment(html);
+          const el = result();
+          el.textContent = "";
+          el.append(fragment);
+        </script>
+      </else>
+    </await>
+  </try>
+</key>
